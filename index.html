@@ -24,7 +24,7 @@
             position: relative;
         }
 
-        /* TEMÁTICA INFANTIL: Nubes mágicas de fondo */
+        /* Nubes mágicas de fondo */
         .cloud {
             position: absolute;
             background: rgba(255, 255, 255, 0.85);
@@ -38,11 +38,11 @@
             background: rgba(255, 255, 255, 0.85);
             border-radius: 50%;
         }
-        .c1 { width: 150px; height: 60px; top: 15%; left: -150px; animation-duration: 25s; }
+        .c1 { width: 150px; height: 60px; top: 10%; left: -150px; animation-duration: 25s; }
         .c1::before { width: 70px; height: 70px; top: -35px; left: 20px; }
         .c1::after { width: 90px; height: 90px; top: -45px; left: 60px; }
 
-        .c2 { width: 200px; height: 70px; top: 60%; left: -200px; animation-duration: 32s; animation-delay: 5s; }
+        .c2 { width: 200px; height: 70px; top: 70%; left: -200px; animation-duration: 32s; animation-delay: 5s; }
         .c2::before { width: 90px; height: 90px; top: -45px; left: 30px; }
         .c2::after { width: 110px; height: 110px; top: -55px; left: 75px; }
 
@@ -51,14 +51,13 @@
             100% { left: 105vw; }
         }
 
-        /* Guía para el narrador */
         #guide {
             position: absolute;
-            top: 25px;
+            top: 20px;
             font-size: 1.1rem;
             color: #475569;
             background: rgba(255, 255, 255, 0.95);
-            padding: 12px 24px;
+            padding: 10px 24px;
             border-radius: 50px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             font-weight: bold;
@@ -66,66 +65,88 @@
         }
         #guide span { font-weight: 900; color: #0284c7; }
 
-        /* CONTENEDOR PRINCIPAL DEL PERSONAJE */
-        .avatar-container {
-            position: relative;
-            width: 350px;
-            height: 350px;
+        /* ESCENARIO DE LOS NIÑOS */
+        .stage {
             display: flex;
-            justify-content: center;
+            gap: 60px;
             align-items: center;
+            justify-content: center;
             z-index: 5;
+            height: 320px;
         }
 
-        /* EL AVATAR: NIÑO JESÚS */
-        .jesus-character {
-            width: 260px;
-            height: 260px;
+        /* ESTRUCTURA BASE DE CABEZA */
+        .child {
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
-            background: #fde047; /* Rostro tierno */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1), inset -10px -10px 20px rgba(0,0,0,0.1);
+            background: #fbcfe8; /* Base piel suave */
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1), inset -8px -8px 16px rgba(0,0,0,0.1);
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: gentle-idle 4s ease-in-out infinite;
+            animation: gentle-float 4s ease-in-out infinite;
         }
+        
+        /* Retraso de animación para que no se muevan exactamente iguales */
+        .girl { animation-delay: 0.5s; background: #fed7aa; } 
 
-        /* Resplandor / Aureola Divina */
-        .halo {
+        /* CABELLO NIÑO (Sin gorra, corte clásico tierno) */
+        .boy .hair {
             position: absolute;
-            width: 310px;
-            height: 310px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(253,224,71,0.6) 0%, rgba(253,224,71,0) 70%);
-            animation: pulse-halo 2s infinite alternate ease-in-out;
-            z-index: 4;
-            transition: all 0.6s ease;
+            top: -12px;
+            width: 230px;
+            height: 85px;
+            background: #7c2d12; /* Castaño */
+            border-radius: 120px 120px 20px 20px;
+        }
+        .boy .hair-fringe {
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            width: 0; height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 25px solid #7c2d12;
+            filter: drop-shadow(40px 0 0 #7c2d12) drop-shadow(80px 0 0 #7c2d12);
         }
 
-        /* Pelo castaño tierno */
-        .hair {
+        /* CABELLO NIÑA (Dos coletas tiernas) */
+        .girl .hair {
             position: absolute;
             top: -10px;
-            width: 280px;
-            height: 90px;
-            background: #7c2d12;
-            border-radius: 140px 140px 40px 40px;
+            width: 230px;
+            height: 75px;
+            background: #1e293b; /* Negro */
+            border-radius: 120px 120px 10px 10px;
         }
+        /* Coletas a los lados */
+        .girl .hair::before, .girl .hair::after {
+            content: '';
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            background: #1e293b;
+            border-radius: 50%;
+            top: 30px;
+        }
+        .girl .hair::before { left: -25px; }
+        .girl .hair::after { right: -25px; }
 
-        /* OJOS DEL NIÑO JESÚS */
+        /* OJOS GRANDES */
         .eyes-container {
             display: flex;
-            gap: 50px;
-            margin-top: 30px;
-            margin-bottom: 20px;
+            gap: 40px;
+            margin-top: 40px;
+            margin-bottom: 15px;
             z-index: 6;
         }
         .eye {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             background: #0f172a;
             border-radius: 50%;
             position: relative;
@@ -134,28 +155,63 @@
         .eye::after {
             content: '';
             position: absolute;
-            top: 6px;
-            left: 8px;
-            width: 16px;
-            height: 16px;
+            top: 5px;
+            left: 7px;
+            width: 14px;
+            height: 14px;
             background: white;
             border-radius: 50%;
         }
 
         /* BOCA */
         .mouth {
-            width: 80px;
-            height: 40px;
+            width: 70px;
+            height: 35px;
             background: #451a03;
-            border-radius: 0 0 80px 80px;
+            border-radius: 0 0 70px 70px;
             transition: all 0.5s ease;
             z-index: 6;
         }
 
-        /* TEXTO EN PANTALLA GIGANTE */
+        /* LÁGRIMAS QUE COMIENZAN OCULTAS */
+        .teardrop-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 7;
+            display: none;
+        }
+        .teardrop {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #38bdf8;
+            border-radius: 0 50% 50% 50%;
+            transform: rotate(45deg);
+            animation: drop-fall 1s infinite linear;
+        }
+        /* Posiciones debajo de los ojos */
+        .t1 { left: 55px; top: 120px; }
+        .t2 { right: 55px; top: 120px; animation-delay: 0.4s; }
+
+        /* EFECTO Zzz */
+        .zzz {
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #818cf8;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* TEXTO BANNER GIGANTE */
         #text-banner {
-            margin-top: 30px;
-            font-size: 3.8rem;
+            margin-top: 40px;
+            font-size: 3.5rem;
             font-weight: 900;
             text-align: center;
             text-transform: uppercase;
@@ -165,113 +221,40 @@
             transition: all 0.5s ease;
         }
 
-        /* Letras Zzz para cuando duerme */
-        .zzz-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 3rem;
-            font-weight: bold;
-            color: #a5b4fc;
-            opacity: 0;
-            display: flex;
-            flex-direction: column;
-        }
+        /* ================= CAMBIOS DE ESTADO (TECLAS) ================= */
 
-        /* ================= ESTADOS EMOCIONALES / TECLAS ================= */
-
-        /* [S] MODO DORMIR (Inicio de la historia) */
-        body.sleep-mode {
-            background: linear-gradient(to bottom, #1e1b4b, #312e81); /* Noche profunda */
-        }
-        body.sleep-mode .halo {
-            background: radial-gradient(circle, rgba(253,224,71,0.2) 0%, rgba(253,224,71,0) 50%);
-        }
-        body.sleep-mode .jesus-character {
-            background: #fef08a;
-            animation: slow-breath 4s infinite ease-in-out; /* Respiración pesada de sueño */
-        }
-        body.sleep-mode .eye {
-            height: 10px;
-            border-radius: 0 0 45px 45px; /* Ojos cerrados (felices) */
-            background: #7c2d12;
-        }
+        /* [S] MODO DORMIR */
+        body.sleep-mode { background: linear-gradient(to bottom, #1e1b4b, #312e81); }
+        body.sleep-mode .child { animation: slow-breath 4s infinite ease-in-out; }
+        body.sleep-mode .eye { height: 8px; border-radius: 0 0 40px 40px; background: #451a03; }
         body.sleep-mode .eye::after { opacity: 0; }
-        body.sleep-mode .mouth {
-            width: 30px;
-            height: 15px;
-            border-radius: 50%; /* Boquita de 'O' roncando */
-            background: #7c2d12;
-        }
-        body.sleep-mode .zzz-container {
-            opacity: 1;
-        }
-        body.sleep-mode .zzz-1 { animation: zzz-fly 2s infinite 0s; }
-        body.sleep-mode .zzz-2 { animation: zzz-fly 2s infinite 0.6s; }
+        body.sleep-mode .mouth { width: 25px; height: 15px; border-radius: 50%; background: #451a03; }
+        body.sleep-mode .zzz { opacity: 1; animation: zzz-float 2s infinite ease-in-out; }
+        body.sleep-mode .girl .zzz { animation-delay: 0.7s; }
 
-        /* [B] MODO TRISTE (La mamá que llora) */
-        body.sad-mode {
-            background: linear-gradient(to bottom, #475569, #334155); /* Gris tormentoso */
-        }
-        body.sad-mode .halo { opacity: 0; }
-        body.sad-mode .jesus-character {
-            background: #93c5fd; /* Se pone azulado de empatía/tristeza */
-            animation: shiver 0.15s infinite;
-        }
-        body.sad-mode .eye {
-            height: 15px;
-            border-radius: 45px 45px 0 0; /* Ojos tristes hacia arriba */
-            background: #1e293b;
-        }
+        /* [B] MODO LLORAR / TRISTE */
+        body.sad-mode { background: linear-gradient(to bottom, #475569, #334155); }
+        body.sad-mode .child { animation: shiver 0.15s infinite; }
+        body.sad-mode .eye { height: 12px; border-radius: 40px 40px 0 0; background: #1e293b; }
         body.sad-mode .eye::after { opacity: 0; }
-        body.sad-mode .mouth {
-            width: 70px;
-            height: 30px;
-            border-radius: 70px 70px 0 0; /* Curva triste hacia abajo */
-            background: #1e293b;
-            transform: translateY(10px);
-        }
+        body.sad-mode .mouth { width: 60px; height: 25px; border-radius: 60px 60px 0 0; background: #1e293b; transform: translateY(8px); }
+        body.sad-mode .teardrop-container { display: block; }
 
-        /* [A] MODO FELIZ / RESURRECCIÓN (¡El Clímax!) */
-        body.happy-mode {
-            background: linear-gradient(to bottom, #f0fdf4, #bbf7d0); /* Verde glorioso/vida */
-        }
-        body.happy-mode .halo {
-            width: 360px;
-            height: 360px;
-            background: radial-gradient(circle, rgba(253,224,71,0.9) 0%, rgba(253,224,71,0) 80%);
-        }
-        body.happy-mode .jesus-character {
-            background: #fde047;
-            animation: jump-victory 0.5s infinite alternate cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        body.happy-mode .eye {
-            transform: scale(1.2);
-        }
-        body.happy-mode .mouth {
-            width: 90px;
-            height: 50px;
-            border-radius: 0 0 90px 90px;
-            background: #451a03;
-        }
+        /* [A] MODO FELIZ / SALTAR */
+        body.happy-mode { background: linear-gradient(to bottom, #f0fdf4, #bbf7d0); }
+        body.happy-mode .child { animation: jump-victory 0.5s infinite alternate cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        body.happy-mode .girl { animation-delay: 0.15s; } /* Saltos alternados muy divertidos */
+        body.happy-mode .eye { transform: scale(1.1); }
+        body.happy-mode .mouth { width: 80px; height: 45px; border-radius: 0 0 80px 80px; }
 
-        /* ================= MICRO-ANIMACIONES INFANTILES ================= */
-        @keyframes gentle-idle {
+        /* ================= ANIMACIONES ================= */
+        @keyframes gentle-float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        @keyframes pulse-halo {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            100% { transform: scale(1.05); opacity: 1; }
+            50% { transform: translateY(-12px); }
         }
         @keyframes slow-breath {
             0%, 100% { transform: scale(1) translateY(0); }
-            50% { transform: scale(0.96) translateY(5px); }
-        }
-        @keyframes zzz-fly {
-            0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translate(40px, -60px) scale(1.2); opacity: 0; }
+            50% { transform: scale(0.97) translateY(4px); }
         }
         @keyframes shiver {
             0% { transform: translate(1px, 1px); }
@@ -281,8 +264,18 @@
             0% { transform: translateY(0); }
             100% { transform: translateY(-50px); }
         }
+        @keyframes zzz-float {
+            0% { transform: translate(0,0) scale(0.6); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(30px, -50px) scale(1.2); opacity: 0; }
+        }
+        @keyframes drop-fall {
+            0% { transform: translateY(0) rotate(45deg) scale(0.4); opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: translateY(90px) rotate(45deg) scale(1.1); opacity: 0; }
+        }
 
-        /* Botones ocultos abajo */
+        /* Controles invisibles táctiles abajo */
         .controls { position: absolute; bottom: 15px; display: flex; gap: 15px; opacity: 0.05; transition: opacity 0.3s;}
         .controls:hover { opacity: 1; }
         button { padding: 8px 16px; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
@@ -290,26 +283,39 @@
 </head>
 <body>
 
-    <!-- Nubes Infantiles de fondo -->
     <div class="cloud c1"></div>
     <div class="cloud c2"></div>
 
-    <div id="guide">Controles: [S] <span>Dormir</span> | [B] <span>Triste</span> | [A] <span>¡Resucitó!</span></div>
+    <div id="guide">Teclas: [S] <span>Dormir</span> | [B] <span>Llorar</span> | [A] <span>¡Despertar!</span></div>
 
-    <div class="avatar-container">
-        <div class="halo"></div>
-        <div class="jesus-character">
+    <div class="stage">
+        <!-- AVATAR NIÑO -->
+        <div class="child boy">
+            <div class="hair"><div class="hair-fringe"></div></div>
+            <div class="eyes-container">
+                <div class="eye"></div>
+                <div class="eye"></div>
+            </div>
+            <div class="mouth"></div>
+            <div class="zzz">Zzz</div>
+            <div class="teardrop-container">
+                <div class="teardrop t1"></div>
+                <div class="teardrop t2"></div>
+            </div>
+        </div>
+
+        <!-- AVATAR NIÑA -->
+        <div class="child girl">
             <div class="hair"></div>
             <div class="eyes-container">
                 <div class="eye"></div>
                 <div class="eye"></div>
             </div>
             <div class="mouth"></div>
-            
-            <!-- Efecto Zzz -->
-            <div class="zzz-container">
-                <span class="zzz-1">z</span>
-                <span class="zzz-2">Z</span>
+            <div class="zzz">Zzz</div>
+            <div class="teardrop-container">
+                <div class="teardrop t1"></div>
+                <div class="teardrop t2"></div>
             </div>
         </div>
     </div>
@@ -342,12 +348,11 @@
 
         function triggerHappy() {
             body.className = 'happy-mode';
-            banner.textContent = "¡JESÚS LO DESPERTÓ!";
+            banner.textContent = "¡JESÚS LOS DESPERTÓ!";
             banner.style.color = "#15803d";
             banner.style.textShadow = "4px 4px 0px #ffffff";
         }
 
-        // Eventos del Teclado
         window.addEventListener('keydown', (e) => {
             const key = e.key.toLowerCase();
             if (key === 's') triggerSleep();
