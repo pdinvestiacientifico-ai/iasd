@@ -13,276 +13,346 @@
         
         body {
             font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif;
-            background-color: #e0f2fe; /* Azul cielo inicial (Calma) */
+            background: linear-gradient(to bottom, #bae6fd, #e0f2fe); /* Cielo tierno */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            transition: background-color 0.8s ease;
+            transition: all 0.8s ease;
+            position: relative;
         }
 
-        /* Guía discreta para el narrador */
+        /* TEMÁTICA INFANTIL: Nubes mágicas de fondo */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 100px;
+            animation: float-clouds 20s infinite linear;
+            z-index: 1;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+        }
+        .c1 { width: 150px; height: 60px; top: 15%; left: -150px; animation-duration: 25s; }
+        .c1::before { width: 70px; height: 70px; top: -35px; left: 20px; }
+        .c1::after { width: 90px; height: 90px; top: -45px; left: 60px; }
+
+        .c2 { width: 200px; height: 70px; top: 60%; left: -200px; animation-duration: 32s; animation-delay: 5s; }
+        .c2::before { width: 90px; height: 90px; top: -45px; left: 30px; }
+        .c2::after { width: 110px; height: 110px; top: -55px; left: 75px; }
+
+        @keyframes float-clouds {
+            0% { left: -250px; }
+            100% { left: 105vw; }
+        }
+
+        /* Guía para el narrador */
         #guide {
             position: absolute;
             top: 25px;
             font-size: 1.1rem;
             color: #475569;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 12px 24px;
             border-radius: 50px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             font-weight: bold;
+            z-index: 10;
         }
+        #guide span { font-weight: 900; color: #0284c7; }
 
-        /* CONTENEDOR DEL AVATAR */
+        /* CONTENEDOR PRINCIPAL DEL PERSONAJE */
         .avatar-container {
             position: relative;
-            width: 320px;
-            height: 320px;
+            width: 350px;
+            height: 350px;
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 5;
         }
 
-        /* CUERPO DEL AVATAR (Cambia de color según emoción) */
-        .character {
-            width: 280px;
-            height: 280px;
+        /* EL AVATAR: NIÑO JESÚS */
+        .jesus-character {
+            width: 260px;
+            height: 260px;
             border-radius: 50%;
-            background: linear-gradient(145deg, #fcd34d, #f59e0b); /* Amarillo alegre por defecto */
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), inset -15px -15px 30px rgba(0,0,0,0.15);
+            background: #fde047; /* Rostro tierno */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1), inset -10px -10px 20px rgba(0,0,0,0.1);
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: idle-float 4s ease-in-out infinite;
+            animation: gentle-idle 4s ease-in-out infinite;
         }
 
-        /* OJOS GRANDES Y EXPRESIVOS (Didáctica Infantil) */
+        /* Resplandor / Aureola Divina */
+        .halo {
+            position: absolute;
+            width: 310px;
+            height: 310px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(253,224,71,0.6) 0%, rgba(253,224,71,0) 70%);
+            animation: pulse-halo 2s infinite alternate ease-in-out;
+            z-index: 4;
+            transition: all 0.6s ease;
+        }
+
+        /* Pelo castaño tierno */
+        .hair {
+            position: absolute;
+            top: -10px;
+            width: 280px;
+            height: 90px;
+            background: #7c2d12;
+            border-radius: 140px 140px 40px 40px;
+        }
+
+        /* OJOS DEL NIÑO JESÚS */
         .eyes-container {
             display: flex;
-            gap: 40px;
+            gap: 50px;
+            margin-top: 30px;
             margin-bottom: 20px;
-            transition: transform 0.3s ease;
+            z-index: 6;
         }
-
         .eye {
-            width: 55px;
-            height: 55px;
+            width: 45px;
+            height: 45px;
             background: #0f172a;
             border-radius: 50%;
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             transition: all 0.5s ease;
         }
-
-        /* Brillo en los ojos (Los hace ver "vivos") */
         .eye::after {
             content: '';
             position: absolute;
-            top: 8px;
-            left: 10px;
-            width: 18px;
-            height: 18px;
+            top: 6px;
+            left: 8px;
+            width: 16px;
+            height: 16px;
             background: white;
             border-radius: 50%;
-            transition: all 0.5s ease;
         }
 
-        /* BOCA DINÁMICA */
+        /* BOCA */
         .mouth {
-            width: 90px;
-            height: 45px;
+            width: 80px;
+            height: 40px;
             background: #451a03;
-            border-radius: 0 0 90px 90px; /* Sonrisa */
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
-
-        /* Lengua tierna dentro de la boca */
-        .mouth::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 25px;
-            width: 40px;
-            height: 20px;
-            background: #f43f5e;
-            border-radius: 20px 20px 0 0;
-            transition: opacity 0.3s;
+            border-radius: 0 0 80px 80px;
+            transition: all 0.5s ease;
+            z-index: 6;
         }
 
         /* TEXTO EN PANTALLA GIGANTE */
         #text-banner {
-            margin-top: 40px;
-            font-size: 3.5rem;
+            margin-top: 30px;
+            font-size: 3.8rem;
             font-weight: 900;
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #1e3a8a;
-            text-shadow: 3px 3px 0px rgba(255,255,255,1);
-            transition: color 0.5s ease;
+            color: #0369a1;
+            text-shadow: 4px 4px 0px #ffffff;
+            z-index: 5;
+            transition: all 0.5s ease;
         }
 
-        /* ================= ESTADOS EMOCIONALES PRO ================= */
-
-        /* ESTADO TRISTE (Tecla B) */
-        body.sad-mode {
-            background-color: #334155; /* Fondo gris oscuro/tristeza */
-        }
-        body.sad-mode .character {
-            background: linear-gradient(145deg, #38bdf8, #0369a1); /* Azul frío/lágrima */
-            animation: sad-shiver 0.5s infinite linear; /* Tiembla de pena */
-        }
-        body.sad-mode .eye {
-            height: 25px; /* Ojos entrecerrados de pena */
-            border-radius: 55px 55px 0 0;
-        }
-        body.sad-mode .eye::after {
-            top: 2px;
-            left: 18px;
-            width: 8px;
-            height: 8px;
-        }
-        body.sad-mode .mouth {
-            width: 70px;
-            height: 35px;
-            border-radius: 70px 70px 0 0; /* Boca hacia abajo (triste) */
-            background: #1e293b;
-            transform: translateY(15px);
-        }
-        body.sad-mode .mouth::after {
-            opacity: 0; /* Desaparece la lengua */
-        }
-
-        /* Lágrimas animadas que caen */
-        .teardrop {
+        /* Letras Zzz para cuando duerme */
+        .zzz-container {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #e0f2fe;
-            border-radius: 0 50% 50% 50%;
-            transform: rotate(45deg);
+            top: 20px;
+            right: 20px;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #a5b4fc;
             opacity: 0;
-            top: 140px;
+            display: flex;
+            flex-direction: column;
         }
-        .teardrop.left { left: 40px; }
-        .teardrop.right { right: 40px; }
-        
-        body.sad-mode .teardrop {
-            animation: cry 1.5s infinite ease-in;
+
+        /* ================= ESTADOS EMOCIONALES / TECLAS ================= */
+
+        /* [S] MODO DORMIR (Inicio de la historia) */
+        body.sleep-mode {
+            background: linear-gradient(to bottom, #1e1b4b, #312e81); /* Noche profunda */
+        }
+        body.sleep-mode .halo {
+            background: radial-gradient(circle, rgba(253,224,71,0.2) 0%, rgba(253,224,71,0) 50%);
+        }
+        body.sleep-mode .jesus-character {
+            background: #fef08a;
+            animation: slow-breath 4s infinite ease-in-out; /* Respiración pesada de sueño */
+        }
+        body.sleep-mode .eye {
+            height: 10px;
+            border-radius: 0 0 45px 45px; /* Ojos cerrados (felices) */
+            background: #7c2d12;
+        }
+        body.sleep-mode .eye::after { opacity: 0; }
+        body.sleep-mode .mouth {
+            width: 30px;
+            height: 15px;
+            border-radius: 50%; /* Boquita de 'O' roncando */
+            background: #7c2d12;
+        }
+        body.sleep-mode .zzz-container {
             opacity: 1;
         }
+        body.sleep-mode .zzz-1 { animation: zzz-fly 2s infinite 0s; }
+        body.sleep-mode .zzz-2 { animation: zzz-fly 2s infinite 0.6s; }
 
-        /* ESTADO FELIZ / CLÍMAX (Tecla A) */
-        body.happy-mode .character {
-            animation: happy-jump 0.6s infinite alternate cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: linear-gradient(145deg, #4ade80, #16a34a); /* Verde brillante de vida/alegría */
+        /* [B] MODO TRISTE (La mamá que llora) */
+        body.sad-mode {
+            background: linear-gradient(to bottom, #475569, #334155); /* Gris tormentoso */
+        }
+        body.sad-mode .halo { opacity: 0; }
+        body.sad-mode .jesus-character {
+            background: #93c5fd; /* Se pone azulado de empatía/tristeza */
+            animation: shiver 0.15s infinite;
+        }
+        body.sad-mode .eye {
+            height: 15px;
+            border-radius: 45px 45px 0 0; /* Ojos tristes hacia arriba */
+            background: #1e293b;
+        }
+        body.sad-mode .eye::after { opacity: 0; }
+        body.sad-mode .mouth {
+            width: 70px;
+            height: 30px;
+            border-radius: 70px 70px 0 0; /* Curva triste hacia abajo */
+            background: #1e293b;
+            transform: translateY(10px);
+        }
+
+        /* [A] MODO FELIZ / RESURRECCIÓN (¡El Clímax!) */
+        body.happy-mode {
+            background: linear-gradient(to bottom, #f0fdf4, #bbf7d0); /* Verde glorioso/vida */
+        }
+        body.happy-mode .halo {
+            width: 360px;
+            height: 360px;
+            background: radial-gradient(circle, rgba(253,224,71,0.9) 0%, rgba(253,224,71,0) 80%);
+        }
+        body.happy-mode .jesus-character {
+            background: #fde047;
+            animation: jump-victory 0.5s infinite alternate cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         body.happy-mode .eye {
             transform: scale(1.2);
         }
-
-        /* ================= ANIMACIONES DIDÁCTICAS ================= */
-        
-        /* Respiración normal (Para el inicio cuando duermen) */
-        @keyframes idle-float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-15px) scale(1.02); }
+        body.happy-mode .mouth {
+            width: 90px;
+            height: 50px;
+            border-radius: 0 0 90px 90px;
+            background: #451a03;
         }
 
-        /* Temblor de tristeza */
-        @keyframes sad-shiver {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(-2px, 1px); }
-            75% { transform: translate(2px, -1px); }
+        /* ================= MICRO-ANIMACIONES INFANTILES ================= */
+        @keyframes gentle-idle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes pulse-halo {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+        @keyframes slow-breath {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(0.96) translateY(5px); }
+        }
+        @keyframes zzz-fly {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(40px, -60px) scale(1.2); opacity: 0; }
+        }
+        @keyframes shiver {
+            0% { transform: translate(1px, 1px); }
+            100% { transform: translate(-1px, -1px); }
+        }
+        @keyframes jump-victory {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
         }
 
-        /* Caída de lágrimas */
-        @keyframes cry {
-            0% { transform: translateY(0) rotate(45deg) scale(0.5); opacity: 1; }
-            80% { opacity: 1; }
-            100% { transform: translateY(120px) rotate(45deg) scale(1); opacity: 0; }
-        }
-
-        /* Salto de victoria (Clímax de la resurrección) */
-        @keyframes happy-jump {
-            0% { transform: translateY(0) scale(1, 1); }
-            100% { transform: translateY(-60px) scale(1.05, 0.95); }
-        }
-
-        /* Controladores táctiles ocultos/bonitos en la parte inferior */
-        .controls {
-            position: absolute;
-            bottom: 20px;
-            display: flex;
-            gap: 20px;
-            opacity: 0.1; /* Casi invisibles en la pantalla grande para no distraer */
-            transition: opacity 0.3s;
-        }
+        /* Botones ocultos abajo */
+        .controls { position: absolute; bottom: 15px; display: flex; gap: 15px; opacity: 0.05; transition: opacity 0.3s;}
         .controls:hover { opacity: 1; }
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        button { padding: 8px 16px; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="guide">Teclas: [A] ¡Feliz/Resucitó! | [B] Triste/Llorando</div>
+    <!-- Nubes Infantiles de fondo -->
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+
+    <div id="guide">Controles: [S] <span>Dormir</span> | [B] <span>Triste</span> | [A] <span>¡Resucitó!</span></div>
 
     <div class="avatar-container">
-        <div class="character" id="avatar">
+        <div class="halo"></div>
+        <div class="jesus-character">
+            <div class="hair"></div>
             <div class="eyes-container">
                 <div class="eye"></div>
                 <div class="eye"></div>
             </div>
             <div class="mouth"></div>
-            <!-- Lágrimas ocultas que se activan con CSS -->
-            <div class="teardrop left"></div>
-            <div class="teardrop right"></div>
+            
+            <!-- Efecto Zzz -->
+            <div class="zzz-container">
+                <span class="zzz-1">z</span>
+                <span class="zzz-2">Z</span>
+            </div>
         </div>
     </div>
 
-    <div id="text-banner">¡Hola Amiguitos!</div>
+    <div id="text-banner">¡BIENVENIDOS!</div>
 
     <div class="controls">
-        <button onclick="triggerHappy()">A (Feliz)</button>
+        <button onclick="triggerSleep()">S (Dormir)</button>
         <button onclick="triggerSad()">B (Triste)</button>
+        <button onclick="triggerHappy()">A (Feliz)</button>
     </div>
 
     <script>
         const body = document.body;
         const banner = document.getElementById('text-banner');
 
-        function triggerHappy() {
-            body.className = 'happy-mode';
-            banner.textContent = "¡VIVE! ¡QUÉ ALEGRÍA!";
-            banner.style.color = "#ffffff";
-            banner.style.textShadow = "3px 3px 0px #16a34a";
+        function triggerSleep() {
+            body.className = 'sleep-mode';
+            banner.textContent = "SHHH... ¡A DORMIR!";
+            banner.style.color = "#a5b4fc";
+            banner.style.textShadow = "4px 4px 0px #1e1b4b";
         }
 
         function triggerSad() {
             body.className = 'sad-mode';
-            banner.textContent = "¡ESTÁ LLORANDO!";
-            banner.style.color = "#93c5fd";
-            banner.style.textShadow = "3px 3px 0px #1e293b";
+            banner.textContent = "MUY, MUY TRISTE...";
+            banner.style.color = "#cbd5e1";
+            banner.style.textShadow = "4px 4px 0px #1e293b";
         }
 
-        // Captura de teclado
+        function triggerHappy() {
+            body.className = 'happy-mode';
+            banner.textContent = "¡JESÚS LO DESPERTÓ!";
+            banner.style.color = "#15803d";
+            banner.style.textShadow = "4px 4px 0px #ffffff";
+        }
+
+        // Eventos del Teclado
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'a' || e.key === 'A') triggerHappy();
-            if (e.key === 'b' || e.key === 'B') triggerSad();
+            const key = e.key.toLowerCase();
+            if (key === 's') triggerSleep();
+            if (key === 'b') triggerSad();
+            if (key === 'a') triggerHappy();
         });
     </script>
 </body>
