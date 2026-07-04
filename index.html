@@ -22,10 +22,10 @@
             overflow: hidden;
             transition: all 0.8s ease;
             position: relative;
-            cursor: pointer; /* Indica que se puede hacer clic */
+            cursor: pointer;
         }
 
-        /* Pantalla de inicio para forzar la activación */
+        /* Pantalla de inicio para activar audio */
         #start-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -94,7 +94,6 @@
             font-weight: bold;
             z-index: 10;
         }
-        #guide span { font-weight: 900; color: #0284c7; }
 
         /* ESCENARIO DE LOS NIÑOS */
         .stage {
@@ -110,7 +109,6 @@
             width: 220px;
             height: 220px;
             border-radius: 50%;
-            background: #fbcfe8;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -121,6 +119,7 @@
             animation: gentle-float 4s ease-in-out infinite;
         }
         
+        .boy { background: #fbcfe8; }
         .girl { animation-delay: 0.5s; background: #fed7aa; } 
 
         /* CABELLO NIÑO */
@@ -131,6 +130,7 @@
             height: 85px;
             background: #7c2d12;
             border-radius: 120px 120px 20px 20px;
+            z-index: 3;
         }
         .boy .hair-fringe {
             position: absolute;
@@ -143,51 +143,35 @@
             filter: drop-shadow(40px 0 0 #7c2d12) drop-shadow(80px 0 0 #7c2d12);
         }
 
-        /* CABELLO NIÑA (Largo, Lacio, Recogido con Gancho/Colet) */
-        .girl .hair-back {
-            position: absolute;
-            top: 30px;
-            width: 230px;
-            height: 200px;
-            background: #1e293b;
-            border-radius: 40px 40px 20px 20px;
-            z-index: 2;
-        }
+        /* CABELLO NIÑA CORTO CORREGIDO (No tapa la cara) */
         .girl .hair-top {
             position: absolute;
-            top: -12px;
-            width: 224px;
+            top: -15px;
+            width: 230px;
             height: 80px;
-            background: #1e293b;
-            border-radius: 120px 120px 0 0;
-            z-index: 4;
+            background: #1e293b; /* Cabello oscuro corto */
+            border-radius: 120px 120px 10px 10px;
+            z-index: 3;
         }
-        /* Gancho / Colet Rosa brillante */
+        /* Moño / Colet de adorno a un lado */
         .girl .colet {
             position: absolute;
-            top: -25px;
-            left: 95px;
+            top: -20px;
+            right: 25px;
             width: 35px;
-            height: 20px;
-            background: #f43f5e;
-            border-radius: 5px;
-            z-index: 5;
+            height: 35px;
+            background: #f43f5e; /* Lazo rosa */
+            border-radius: 50% 50% 50% 10%;
+            z-index: 4;
+            transform: rotate(15deg);
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .girl .colet::before {
-            content: '';
-            position: absolute;
-            top: -10px; left: -10px;
-            width: 55px; height: 20px;
-            background: #f43f5e;
-            border-radius: 50%;
-        }
 
-        /* OJOS GRANDES */
+        /* OJOS (Asegurados en z-index superior) */
         .eyes-container {
             display: flex;
             gap: 40px;
-            margin-top: 45px;
+            margin-top: 50px;
             margin-bottom: 15px;
             z-index: 6;
         }
@@ -322,7 +306,7 @@
             100% { transform: translateY(110px) rotate(45deg) scale(1.1); opacity: 0; }
         }
 
-        /* Controles inferiores de respaldo visibles y grandes */
+        /* Controles inferiores */
         .controls { position: absolute; bottom: 30px; display: flex; gap: 20px; z-index: 20; }
         .controls button { 
             padding: 15px 30px; font-size: 1.2rem; border: none; border-radius: 25px; 
@@ -337,7 +321,6 @@
 </head>
 <body>
 
-    <!-- Pantalla de desbloqueo obligatorio (Soluciona el fallo de audio y foco) -->
     <div id="start-overlay" onclick="startStory()">
         <h1 style="margin-bottom: 20px; font-size: 2.5rem; text-align: center;">Historia Interactiva Infantil</h1>
         <button id="start-button">¡Haga Clic para Empezar!</button>
@@ -365,11 +348,10 @@
             </div>
         </div>
 
-        <!-- AVATAR NIÑA (Cabello Lacio con Colet/Gancho) -->
+        <!-- AVATAR NIÑA CORREGIDA (Cabello corto con Lazo) -->
         <div class="child girl">
-            <div class="colet"></div>
             <div class="hair-top"></div>
-            <div class="hair-back"></div>
+            <div class="colet"></div>
             <div class="eyes-container">
                 <div class="eye"></div>
                 <div class="eye"></div>
@@ -385,7 +367,6 @@
 
     <div id="text-banner">¡BIENVENIDOS!</div>
 
-    <!-- Botones físicos grandes en pantalla por si el teclado falla en el proyector -->
     <div class="controls">
         <button id="btn-s" onclick="triggerSleep(); event.stopPropagation();">Tecla [S] Dormir</button>
         <button id="btn-b" onclick="triggerSad(); event.stopPropagation();">Tecla [B] Triste</button>
@@ -397,21 +378,19 @@
         const banner = document.getElementById('text-banner');
         let audioReady = false;
 
-        // Desbloquear audio e interfaz
         function startStory() {
             document.getElementById('start-overlay').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('start-overlay').style.display = 'none';
             }, 500);
             audioReady = true;
-            window.focus(); // Obliga al navegador a escuchar el teclado
+            window.focus(); 
             playSound("¡Bienvenidos amiguitos!");
         }
 
-        // Motor de sonido corregido
         function playSound(text) {
             if (!audioReady) return;
-            window.speechSynthesis.cancel(); // Detener cualquier sonido anterior
+            window.speechSynthesis.cancel(); 
             
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'es-MX'; 
@@ -444,7 +423,6 @@
             playSound("¡Sííí! ¡Jajaja! ¡Qué felicidad! ¡Despertaron!");
         }
 
-        // Eventos del Teclado Globales (Asegurados)
         window.addEventListener('keydown', (e) => {
             const key = e.key.toLowerCase();
             if (key === 's') triggerSleep();
