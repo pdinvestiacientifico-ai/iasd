@@ -3,112 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historia Interactiva - Jesús sana al joven</title>
+    <title>Historia Interactiva Infantil</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+        
         body {
-            background-color: #1a1a2e;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif;
+            background-color: #e0f2fe; /* Azul cielo inicial (Calma) */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            transition: background-color 0.5s ease;
+            transition: background-color 0.8s ease;
         }
-        #instructions {
+
+        /* Guía discreta para el narrador */
+        #guide {
             position: absolute;
-            top: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 1rem;
-            text-align: center;
-            pointer-events: none;
-            z-index: 10;
-        }
-        .key-badge {
-            background: #ffde59;
-            color: black;
-            padding: 2px 6px;
-            border-radius: 4px;
+            top: 25px;
+            font-size: 1.1rem;
+            color: #475569;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             font-weight: bold;
         }
-        #display-container {
+
+        /* CONTENEDOR DEL AVATAR */
+        .avatar-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* CUERPO DEL AVATAR (Cambia de color según emoción) */
+        .character {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #fcd34d, #f59e0b); /* Amarillo alegre por defecto */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), inset -15px -15px 30px rgba(0,0,0,0.15);
+            position: relative;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
+            align-items: center;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: idle-float 4s ease-in-out infinite;
         }
-        .emoji {
-            font-size: 35vh; /* Ocupa gran parte de la pantalla */
-            animation: bounce 2s infinite alternate;
+
+        /* OJOS GRANDES Y EXPRESIVOS (Didáctica Infantil) */
+        .eyes-container {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
         }
-        .text-guide {
+
+        .eye {
+            width: 55px;
+            height: 55px;
+            background: #0f172a;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
+
+        /* Brillo en los ojos (Los hace ver "vivos") */
+        .eye::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.5s ease;
+        }
+
+        /* BOCA DINÁMICA */
+        .mouth {
+            width: 90px;
+            height: 45px;
+            background: #451a03;
+            border-radius: 0 0 90px 90px; /* Sonrisa */
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        /* Lengua tierna dentro de la boca */
+        .mouth::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25px;
+            width: 40px;
+            height: 20px;
+            background: #f43f5e;
+            border-radius: 20px 20px 0 0;
+            transition: opacity 0.3s;
+        }
+
+        /* TEXTO EN PANTALLA GIGANTE */
+        #text-banner {
+            margin-top: 40px;
             font-size: 3.5rem;
-            font-weight: bold;
-            margin-top: 20px;
-            padding: 0 40px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: 900;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #1e3a8a;
+            text-shadow: 3px 3px 0px rgba(255,255,255,1);
+            transition: color 0.5s ease;
         }
-        /* Animación suave para las caritas */
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-20px); }
+
+        /* ================= ESTADOS EMOCIONALES PRO ================= */
+
+        /* ESTADO TRISTE (Tecla B) */
+        body.sad-mode {
+            background-color: #334155; /* Fondo gris oscuro/tristeza */
+        }
+        body.sad-mode .character {
+            background: linear-gradient(145deg, #38bdf8, #0369a1); /* Azul frío/lágrima */
+            animation: sad-shiver 0.5s infinite linear; /* Tiembla de pena */
+        }
+        body.sad-mode .eye {
+            height: 25px; /* Ojos entrecerrados de pena */
+            border-radius: 55px 55px 0 0;
+        }
+        body.sad-mode .eye::after {
+            top: 2px;
+            left: 18px;
+            width: 8px;
+            height: 8px;
+        }
+        body.sad-mode .mouth {
+            width: 70px;
+            height: 35px;
+            border-radius: 70px 70px 0 0; /* Boca hacia abajo (triste) */
+            background: #1e293b;
+            transform: translateY(15px);
+        }
+        body.sad-mode .mouth::after {
+            opacity: 0; /* Desaparece la lengua */
+        }
+
+        /* Lágrimas animadas que caen */
+        .teardrop {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #e0f2fe;
+            border-radius: 0 50% 50% 50%;
+            transform: rotate(45deg);
+            opacity: 0;
+            top: 140px;
+        }
+        .teardrop.left { left: 40px; }
+        .teardrop.right { right: 40px; }
+        
+        body.sad-mode .teardrop {
+            animation: cry 1.5s infinite ease-in;
+            opacity: 1;
+        }
+
+        /* ESTADO FELIZ / CLÍMAX (Tecla A) */
+        body.happy-mode .character {
+            animation: happy-jump 0.6s infinite alternate cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: linear-gradient(145deg, #4ade80, #16a34a); /* Verde brillante de vida/alegría */
+        }
+        body.happy-mode .eye {
+            transform: scale(1.2);
+        }
+
+        /* ================= ANIMACIONES DIDÁCTICAS ================= */
+        
+        /* Respiración normal (Para el inicio cuando duermen) */
+        @keyframes idle-float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.02); }
+        }
+
+        /* Temblor de tristeza */
+        @keyframes sad-shiver {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, 1px); }
+            75% { transform: translate(2px, -1px); }
+        }
+
+        /* Caída de lágrimas */
+        @keyframes cry {
+            0% { transform: translateY(0) rotate(45deg) scale(0.5); opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(120px) rotate(45deg) scale(1); opacity: 0; }
+        }
+
+        /* Salto de victoria (Clímax de la resurrección) */
+        @keyframes happy-jump {
+            0% { transform: translateY(0) scale(1, 1); }
+            100% { transform: translateY(-60px) scale(1.05, 0.95); }
+        }
+
+        /* Controladores táctiles ocultos/bonitos en la parte inferior */
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            gap: 20px;
+            opacity: 0.1; /* Casi invisibles en la pantalla grande para no distraer */
+            transition: opacity 0.3s;
+        }
+        .controls:hover { opacity: 1; }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <!-- Instrucciones ocultables para el narrador -->
-    <div id="instructions">
-        Controles: <span class="key-badge">A</span> Carita Feliz | <span class="key-badge">B</span> Carita Triste | <span class="key-badge">S</span> Modo Dormir/Inicio
+    <div id="guide">Teclas: [A] ¡Feliz/Resucitó! | [B] Triste/Llorando</div>
+
+    <div class="avatar-container">
+        <div class="character" id="avatar">
+            <div class="eyes-container">
+                <div class="eye"></div>
+                <div class="eye"></div>
+            </div>
+            <div class="mouth"></div>
+            <!-- Lágrimas ocultas que se activan con CSS -->
+            <div class="teardrop left"></div>
+            <div class="teardrop right"></div>
+        </div>
     </div>
 
-    <div id="display-container">
-        <div id="emoji-target" class="emoji">😴</div>
-        <div id="text-target" class="text-guide">¡Shhh... a dormir!</div>
+    <div id="text-banner">¡Hola Amiguitos!</div>
+
+    <div class="controls">
+        <button onclick="triggerHappy()">A (Feliz)</button>
+        <button onclick="triggerSad()">B (Triste)</button>
     </div>
 
     <script>
         const body = document.body;
-        const emojiTarget = document.getElementById('emoji-target');
-        const textTarget = document.getElementById('text-target');
+        const banner = document.getElementById('text-banner');
 
-        // Escuchar las teclas presionadas
-        document.addEventListener('keydown', function(event) {
-            const key = event.key.toUpperCase();
+        function triggerHappy() {
+            body.className = 'happy-mode';
+            banner.textContent = "¡VIVE! ¡QUÉ ALEGRÍA!";
+            banner.style.color = "#ffffff";
+            banner.style.textShadow = "3px 3px 0px #16a34a";
+        }
 
-            if (key === 'A') {
-                // Configuración Carita Feliz (Clímax y Alegría)
-                body.style.backgroundColor = "#461b93"; // Fondo Morado alegre / festivo
-                emojiTarget.textContent = "😊";
-                textTarget.textContent = "¡QUÉ FELICIDAD!";
-                textTarget.style.color = "#ffde59";
-            } 
-            else if (key === 'B') {
-                // Configuración Carita Triste (La mamá llorando)
-                body.style.backgroundColor = "#222831"; // Fondo oscuro/grisáceo
-                emojiTarget.textContent = "😢";
-                textTarget.textContent = "Muy, muy triste...";
-                textTarget.style.color = "#3a97ff";
-            } 
-            else if (key === 'S') {
-                // Configuración Inicial / Dormir (Introducción y Repaso)
-                body.style.backgroundColor = "#1a1a2e"; // Fondo noche
-                emojiTarget.textContent = "😴";
-                textTarget.textContent = "Es solo un sueño...";
-                textTarget.style.color = "#ffffff";
-            }
+        function triggerSad() {
+            body.className = 'sad-mode';
+            banner.textContent = "¡ESTÁ LLORANDO!";
+            banner.style.color = "#93c5fd";
+            banner.style.textShadow = "3px 3px 0px #1e293b";
+        }
+
+        // Captura de teclado
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'a' || e.key === 'A') triggerHappy();
+            if (e.key === 'b' || e.key === 'B') triggerSad();
         });
     </script>
 </body>
