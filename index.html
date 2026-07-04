@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Arial Rounded MT Bold', 'Helvetica', sans-serif;
-            background: linear-gradient(to bottom, #bae6fd, #e0f2fe); /* Cielo tierno */
+            background: linear-gradient(to bottom, #bae6fd, #e0f2fe);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -22,9 +22,40 @@
             overflow: hidden;
             transition: all 0.8s ease;
             position: relative;
+            cursor: pointer; /* Indica que se puede hacer clic */
         }
 
-        /* Nubes mágicas de fondo */
+        /* Pantalla de inicio para forzar la activación */
+        #start-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 105, 161, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            color: white;
+            transition: opacity 0.5s ease;
+        }
+        #start-button {
+            padding: 20px 40px;
+            font-size: 2rem;
+            background: #fde047;
+            color: #0369a1;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            animation: pulse 1.5s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* Nubes mágicas */
         .cloud {
             position: absolute;
             background: rgba(255, 255, 255, 0.85);
@@ -54,7 +85,7 @@
         #guide {
             position: absolute;
             top: 20px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #475569;
             background: rgba(255, 255, 255, 0.95);
             padding: 10px 24px;
@@ -75,12 +106,11 @@
             height: 340px;
         }
 
-        /* ESTRUCTURA BASE DE CABEZA */
         .child {
             width: 220px;
             height: 220px;
             border-radius: 50%;
-            background: #fbcfe8; /* Base piel suave */
+            background: #fbcfe8;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -99,7 +129,7 @@
             top: -12px;
             width: 230px;
             height: 85px;
-            background: #7c2d12; /* Castaño */
+            background: #7c2d12;
             border-radius: 120px 120px 20px 20px;
         }
         .boy .hair-fringe {
@@ -113,33 +143,44 @@
             filter: drop-shadow(40px 0 0 #7c2d12) drop-shadow(80px 0 0 #7c2d12);
         }
 
-        /* CABELLO NIÑA (Largo y Lacio) */
+        /* CABELLO NIÑA (Largo, Lacio, Recogido con Gancho/Colet) */
+        .girl .hair-back {
+            position: absolute;
+            top: 30px;
+            width: 230px;
+            height: 200px;
+            background: #1e293b;
+            border-radius: 40px 40px 20px 20px;
+            z-index: 2;
+        }
         .girl .hair-top {
             position: absolute;
             top: -12px;
-            width: 232px;
-            height: 70px;
-            background: #1e293b; /* Negro lacio */
+            width: 224px;
+            height: 80px;
+            background: #1e293b;
             border-radius: 120px 120px 0 0;
-            z-index: 3;
-        }
-        .girl .hair-sides {
-            position: absolute;
-            top: 20px;
-            width: 240px;
-            height: 210px; /* Cae bastante más abajo de la barbilla */
-            background: #1e293b;
-            border-radius: 50px 50px 30px 30px;
-            z-index: 2; /* Por detrás de la cara en los bordes */
-        }
-        .girl .fringe {
-            position: absolute;
-            top: 45px;
-            width: 180px;
-            height: 25px;
-            background: #1e293b;
-            border-radius: 0 0 20px 20px;
             z-index: 4;
+        }
+        /* Gancho / Colet Rosa brillante */
+        .girl .colet {
+            position: absolute;
+            top: -25px;
+            left: 95px;
+            width: 35px;
+            height: 20px;
+            background: #f43f5e;
+            border-radius: 5px;
+            z-index: 5;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .girl .colet::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: -10px;
+            width: 55px; height: 20px;
+            background: #f43f5e;
+            border-radius: 50%;
         }
 
         /* OJOS GRANDES */
@@ -281,17 +322,32 @@
             100% { transform: translateY(110px) rotate(45deg) scale(1.1); opacity: 0; }
         }
 
-        .controls { position: absolute; bottom: 15px; display: flex; gap: 15px; opacity: 0.05; transition: opacity 0.3s;}
-        .controls:hover { opacity: 1; }
-        button { padding: 8px 16px; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        /* Controles inferiores de respaldo visibles y grandes */
+        .controls { position: absolute; bottom: 30px; display: flex; gap: 20px; z-index: 20; }
+        .controls button { 
+            padding: 15px 30px; font-size: 1.2rem; border: none; border-radius: 25px; 
+            font-weight: bold; cursor: pointer; background: white; box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .controls button:active { transform: scale(0.95); }
+        #btn-s { color: #4f46e5; }
+        #btn-b { color: #dc2626; }
+        #btn-a { color: #16a34a; }
     </style>
 </head>
 <body>
 
+    <!-- Pantalla de desbloqueo obligatorio (Soluciona el fallo de audio y foco) -->
+    <div id="start-overlay" onclick="startStory()">
+        <h1 style="margin-bottom: 20px; font-size: 2.5rem; text-align: center;">Historia Interactiva Infantil</h1>
+        <button id="start-button">¡Haga Clic para Empezar!</button>
+        <p style="margin-top: 15px; font-size: 1.1rem; opacity: 0.8;">Esto activa las teclas y los sonidos</p>
+    </div>
+
     <div class="cloud c1"></div>
     <div class="cloud c2"></div>
 
-    <div id="guide">Teclas: [S] <span>Dormir</span> | [B] <span>Llorar</span> | [A] <span>¡Despertar!</span></div>
+    <div id="guide">Teclas del Teclado: [S] Dormir | [B] Llorar | [A] ¡Despertar!</div>
 
     <div class="stage">
         <!-- AVATAR NIÑO -->
@@ -309,11 +365,11 @@
             </div>
         </div>
 
-        <!-- AVATAR NIÑA (Cabello Largo y Lacio) -->
+        <!-- AVATAR NIÑA (Cabello Lacio con Colet/Gancho) -->
         <div class="child girl">
-            <div class="hair-sides"></div>
+            <div class="colet"></div>
             <div class="hair-top"></div>
-            <div class="fringe"></div>
+            <div class="hair-back"></div>
             <div class="eyes-container">
                 <div class="eye"></div>
                 <div class="eye"></div>
@@ -329,25 +385,38 @@
 
     <div id="text-banner">¡BIENVENIDOS!</div>
 
+    <!-- Botones físicos grandes en pantalla por si el teclado falla en el proyector -->
     <div class="controls">
-        <button onclick="triggerSleep()">S (Dormir)</button>
-        <button onclick="triggerSad()">B (Triste)</button>
-        <button onclick="triggerHappy()">A (Feliz)</button>
+        <button id="btn-s" onclick="triggerSleep(); event.stopPropagation();">Tecla [S] Dormir</button>
+        <button id="btn-b" onclick="triggerSad(); event.stopPropagation();">Tecla [B] Triste</button>
+        <button id="btn-a" onclick="triggerHappy(); event.stopPropagation();">Tecla [A] Alegre</button>
     </div>
 
     <script>
         const body = document.body;
         const banner = document.getElementById('text-banner');
+        let audioReady = false;
 
-        // Función de sonido asistido por el navegador
-        functionplaySound(text) {
-            // Cancelar cualquier sonido previo activo para evitar sobreposición
-            window.speechSynthesis.cancel();
+        // Desbloquear audio e interfaz
+        function startStory() {
+            document.getElementById('start-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('start-overlay').style.display = 'none';
+            }, 500);
+            audioReady = true;
+            window.focus(); // Obliga al navegador a escuchar el teclado
+            playSound("¡Bienvenidos amiguitos!");
+        }
+
+        // Motor de sonido corregido
+        function playSound(text) {
+            if (!audioReady) return;
+            window.speechSynthesis.cancel(); // Detener cualquier sonido anterior
             
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'es-MX'; // Tono latino amigable
-            utterance.rate = 1.3;     // Un poco más rápido para sonar infantil/caricato
-            utterance.pitch = 1.6;    // Voz más aguda/infantil
+            utterance.lang = 'es-MX'; 
+            utterance.rate = 1.3;     
+            utterance.pitch = 1.6;    
             window.speechSynthesis.speak(utterance);
         }
 
@@ -375,6 +444,7 @@
             playSound("¡Sííí! ¡Jajaja! ¡Qué felicidad! ¡Despertaron!");
         }
 
+        // Eventos del Teclado Globales (Asegurados)
         window.addEventListener('keydown', (e) => {
             const key = e.key.toLowerCase();
             if (key === 's') triggerSleep();
